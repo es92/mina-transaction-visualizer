@@ -197,6 +197,10 @@ const _makeTxnJSON = (minaTxn: Transaction, name: string, legend: Legend) => {
       children: [],
     };
 
+    if (au.body.preconditions != null) {
+      content.preconditions = au.body.preconditions;
+    }
+
     if (au.body.mayUseToken != null) {
       content.mayUseToken = au.body.mayUseToken;
     }
