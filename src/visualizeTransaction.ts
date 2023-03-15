@@ -177,6 +177,14 @@ const _makeTxnJSON = (minaTxn: Transaction, name: string, legend: Legend) => {
       authorization = 'none';
     }
 
+    // TODO should this include
+    //    useFullCommitment (what does it mean?)
+    //    implicitAccountCreationFee (what does it mean?)
+
+    // TODO add
+    //    events
+    //    actions
+
     const content: any = {
       idx: au.idx,
       publicKey: au.body.publicKey,
