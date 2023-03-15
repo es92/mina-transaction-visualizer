@@ -8,14 +8,19 @@ import { exec } from 'child_process';
 import fs from 'fs';
 import fsp from 'fs/promises';
 
-import { Mina, Token, Encoding } from 'snarkyjs';
+import { Mina, Token, Encoding, isReady } from 'snarkyjs';
 
 type Legend = { [pk: string]: string };
+
+//type Transaction = Mina.Transaction; // not working with npm link
+type Transaction = any;
+
+await isReady;
 
 // ====================================================================
 
 export const showTxn = async (
-  txn: Mina.Transaction,
+  txn: Transaction,
   name: string,
   legend: Legend
 ) => {
@@ -33,7 +38,7 @@ export const showTxn = async (
 // ====================================================================
 
 export const saveTxn = (
-  txn: Mina.Transaction,
+  txn: Transaction,
   name: string,
   legend: Legend,
   path: string
@@ -47,11 +52,7 @@ export const saveTxn = (
 
 // ====================================================================
 
-export const printTxn = (
-  txn: Mina.Transaction,
-  name: string,
-  legend: Legend
-) => {
+export const printTxn = (txn: Transaction, name: string, legend: Legend) => {
   const txnJSON = _makeTxnJSON(txn, name, legend);
   console.log(
     util.inspect(txnJSON, { showHidden: false, depth: null, colors: true })
@@ -96,11 +97,7 @@ const _makeGraphQL = (minaJSON: any) => {
 
 // ====================================================================
 
-const _makeTxnJSON = (
-  minaTxn: Mina.Transaction,
-  name: string,
-  legend: Legend
-) => {
+const _makeTxnJSON = (minaTxn: Transaction, name: string, legend: Legend) => {
   legend[Encoding.TokenId.toBase58(Token.Id.default)] = 'MINA';
 
   const txn = JSON.parse(minaTxn.toJSON());
@@ -263,7 +260,7 @@ function openImage(imagePath: string) {
     return;
   }
 
-  console.log(command);
+  //console.log(command);
 
   exec(command, (error, stdout, stderr) => {
     if (error) {
